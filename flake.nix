@@ -20,6 +20,7 @@
           haskell-language-server
           cabal-install
           ghcid
+          hlint
         ];
       };
     };
