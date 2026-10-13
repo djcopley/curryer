@@ -6,22 +6,25 @@
   outputs =
     { self, nixpkgs }:
     let
-      system = "aarch64-darwin";
-      pkgs = import nixpkgs {
-        inherit system;
-      };
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          git
-          jujutsu
-          ghc
-          haskell-language-server
-          cabal-install
-          ghcid
-          hlint
-        ];
-      };
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            git
+            jujutsu
+            ghc
+            haskell-language-server
+            cabal-install
+            ghcid
+            hlint
+          ];
+        };
+      });
     };
 }
