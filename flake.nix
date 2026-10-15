@@ -15,15 +15,19 @@
     {
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
-          packages = with pkgs; [
-            git
-            jujutsu
-            ghc
-            haskell-language-server
-            cabal-install
-            ghcid
-            hlint
-          ];
+          packages =
+            (with pkgs; [
+              git
+              jujutsu
+            ])
+            ++ (with pkgs.haskellPackages; [
+              ghc
+              haskell-language-server
+              cabal-install
+              cabal-gild
+              ghcid
+              hlint
+            ]);
         };
       });
     };
